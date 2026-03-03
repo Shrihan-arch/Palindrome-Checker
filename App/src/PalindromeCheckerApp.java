@@ -1,29 +1,47 @@
-public class PalindromeCheckerApp {git
+public class PalindromeCheckerApp {
 
-    public static boolean isPalindrome(String str, int start, int end) {
+    // Public method (Service API)
+    public boolean checkPalindrome(String input) {
 
-        // Base condition
-        if (start >= end) {
-            return true;
-        }
-
-        // Mismatch condition
-        if (str.charAt(start) != str.charAt(end)) {
+        if (input == null) {
             return false;
         }
 
-        // Recursive call
-        return isPalindrome(str, start + 1, end - 1);
+        String normalized = preprocess(input);
+        return isPalindrome(normalized);
     }
 
+    // Private preprocessing (Encapsulation)
+    private String preprocess(String input) {
+        return input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+    }
+
+    // Internal palindrome logic
+    private boolean isPalindrome(String str) {
+
+        char[] chars = str.toCharArray();
+        int left = 0;
+        int right = chars.length - 1;
+
+        while (left < right) {
+            if (chars[left] != chars[right]) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+
+    // Main method (Application entry point)
     public static void main(String[] args) {
 
-        String input = "A man a plan a canal Panama";
+        PalindromeCheckerApp checker = new PalindromeCheckerApp();
 
-        // Normalize string (ignore spaces & case)
-        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        String input = "racecar";
 
-        boolean result = isPalindrome(normalized, 0, normalized.length() - 1);
+        boolean result = checker.checkPalindrome(input);
 
         System.out.println("Input : " + input);
         System.out.println("Is Palindrome? : " + result);
